@@ -22,14 +22,20 @@
   <meta property="og:title" content="Servicio de Conductor Privado en Managua, Nicaragua">
   <meta property="og:description" content="Tu viaje, tu comodidad y tu tranquilidad. Traslados privados en Managua y a todos los departamentos de Nicaragua. Cotización sin compromiso.">
   <meta property="og:image" content="https://trasladosprivadoni.com/assets/chofer.png">
+  <meta property="og:image:width" content="1080">
+  <meta property="og:image:height" content="1080">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:alt" content="Afiche del servicio de conductor privado en Managua, Nicaragua">
   <meta property="og:url" content="https://trasladosprivadoni.com/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Servicio de Conductor Privado en Managua, Nicaragua">
   <meta name="twitter:description" content="Traslados privados cómodos, seguros y confiables en Managua y todos los departamentos de Nicaragua.">
   <meta name="twitter:image" content="https://trasladosprivadoni.com/assets/chofer.png">
+  <meta name="twitter:image:alt" content="Afiche del servicio de conductor privado en Managua, Nicaragua">
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%230a3d91'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23fff'/%3E%3Cpath d='M50 36V10M50 64v26M36 50H10M64 50h26' stroke='%23fff' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/style.css">
 
   <!-- Datos estructurados: negocio local en Managua + servicio con cobertura nacional -->
@@ -92,6 +98,45 @@
     }
   }
   </script>
+  <!-- Datos estructurados: preguntas frecuentes (rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cómo cotizo mi viaje?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Nos escribes por WhatsApp con tu punto de origen, destino, fecha y número de pasajeros. Te respondemos con el precio sin ningún compromiso." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Hasta dónde viajan?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Dentro de todo Managua y a todos los departamentos de Nicaragua. En esta página hay un mapa interactivo con toda la cobertura." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿El servicio es solo para mí o puedo llevar a mi familia?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Realizamos traslados personales y familiares, con espacio para tu equipaje y trato amable en cada viaje." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué tipo de vehículo usan?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Trabajamos con vehículo particular, brindándote una opción cómoda, segura y confiable para tus traslados." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto cuesta el traslado?",
+        "acceptedAnswer": { "@type": "Answer", "text": "El precio depende de la distancia y el destino. Manejamos precios accesibles y siempre te cotizamos antes de viajar, sin sorpresas ni compromiso." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo aparto mi fecha y hora?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Escríbenos por WhatsApp con los datos de tu viaje y te confirmamos la disponibilidad al momento, con atención personalizada." }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#inicio">Saltar al contenido</a>
@@ -113,6 +158,7 @@
         <li><a href="#servicios" class="nav__enlace">Servicios</a></li>
         <li><a href="#cobertura" class="nav__enlace">Cobertura</a></li>
         <li><a href="#cotiza" class="nav__enlace">Cotiza</a></li>
+        <li><a href="#faq" class="nav__enlace">Preguntas</a></li>
         <li><a href="#contacto" class="nav__enlace">Contacto</a></li>
       </ul>
       <a class="btn btn--wa btn--nav" id="waHeader" data-jelly href="https://wa.me/50578106345?text=Hola%21%20Vengo%20de%20la%20web%20y%20quiero%20cotizar%20un%20viaje%20privado." target="_blank" rel="noopener">
@@ -267,6 +313,10 @@
                 Cotizar viaje
               </a>
             </div>
+            <div class="cobertura__buscador">
+              <input type="search" id="buscarDepto" placeholder="Buscar departamento…" aria-label="Buscar departamento en la lista">
+            </div>
+            <p class="cobertura__sin-resultados" id="sinResultados" hidden>Sin resultados. Prueba con otro nombre o escríbenos por WhatsApp.</p>
             <p class="cobertura__lista-titulo">17 destinos disponibles:</p>
             <ul class="cobertura__lista" id="listaDeptos" aria-label="Lista de departamentos con cobertura"></ul>
           </aside>
@@ -318,6 +368,49 @@
           </button>
           <p class="form__nota">Se abrirá WhatsApp con tu mensaje listo. Solo presiona enviar.</p>
         </form>
+      </div>
+    </section>
+
+    <!-- ======= PREGUNTAS FRECUENTES ======= -->
+    <section class="seccion seccion--faq" id="faq" aria-labelledby="tituloFaq">
+      <div class="contenedor contenedor--angosto">
+        <header class="seccion__cabeza" data-reveal>
+          <p class="seccion__etiqueta">Preguntas frecuentes</p>
+          <h2 class="seccion__titulo" id="tituloFaq">Todo claro <span class="resaltado">antes de viajar</span></h2>
+          <p class="seccion__sub">Lo que más nos preguntan nuestros clientes. ¿Tu duda no está aquí? Escríbenos por WhatsApp.</p>
+        </header>
+
+        <div class="faq" data-reveal>
+          <details class="faq__item">
+            <summary>¿Cómo cotizo mi viaje?<span class="faq__icono" aria-hidden="true"></span></summary>
+            <div class="faq__respuesta"><p>Nos escribes por WhatsApp con tu punto de origen, destino, fecha y número de pasajeros. Te respondemos con el precio sin ningún compromiso.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>¿Hasta dónde viajan?<span class="faq__icono" aria-hidden="true"></span></summary>
+            <div class="faq__respuesta"><p>Dentro de todo Managua y a todos los departamentos de Nicaragua. Arriba tienes un mapa interactivo con toda la cobertura: toca tu destino y cotizamos al instante.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>¿El servicio es solo para mí o puedo llevar a mi familia?<span class="faq__icono" aria-hidden="true"></span></summary>
+            <div class="faq__respuesta"><p>Realizamos traslados personales y familiares, con espacio para tu equipaje y trato amable en cada viaje.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>¿Qué tipo de vehículo usan?<span class="faq__icono" aria-hidden="true"></span></summary>
+            <div class="faq__respuesta"><p>Trabajamos con vehículo particular, brindándote una opción cómoda, segura y confiable para tus traslados.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>¿Cuánto cuesta el traslado?<span class="faq__icono" aria-hidden="true"></span></summary>
+            <div class="faq__respuesta"><p>El precio depende de la distancia y el destino. Manejamos precios accesibles y siempre te cotizamos antes de viajar, sin sorpresas ni compromiso.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>¿Cómo aparto mi fecha y hora?<span class="faq__icono" aria-hidden="true"></span></summary>
+            <div class="faq__respuesta"><p>Escríbenos por WhatsApp con los datos de tu viaje y te confirmamos la disponibilidad al momento, con atención personalizada.</p></div>
+          </details>
+        </div>
+
+        <p class="faq__cta" data-reveal>
+          ¿Otra duda?
+          <a data-jelly href="https://wa.me/50578106345?text=Hola%21%20Tengo%20una%20pregunta%20sobre%20el%20servicio." target="_blank" rel="noopener">Pregúntanos por WhatsApp</a>
+        </p>
       </div>
     </section>
   </main>
@@ -372,3 +465,4 @@
   <script src="js/app.js" defer></script>
 </body>
 </html>
+                                

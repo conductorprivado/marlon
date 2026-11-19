@@ -38,6 +38,9 @@ body {
 
 img { max-width: 100%; height: auto; display: block; }
 
+/* `hidden` siempre gana sobre display de clases */
+[hidden] { display: none !important; }
+
 .contenedor {
   width: min(1120px, 92%);
   margin-inline: auto;
@@ -568,6 +571,129 @@ img { max-width: 100%; height: auto; display: block; }
   transform: translateY(-2px);
 }
 .footer__credito a:active { transform: scale(.92); }
+
+/* ---------- Preguntas frecuentes ---------- */
+.contenedor--angosto { width: min(820px, 92%); }
+
+.seccion--faq {
+  background:
+    radial-gradient(600px 300px at 108% 15%, rgba(79, 195, 247, .18), transparent 60%);
+}
+
+.faq { display: grid; gap: .7rem; }
+
+.faq__item {
+  background: var(--blanco);
+  border: 1.5px solid rgba(30, 136, 229, .14);
+  border-radius: 18px;
+  box-shadow: 0 6px 20px -14px rgba(5, 34, 82, .3);
+  transition: border-color .3s, box-shadow .3s, transform .5s var(--muelle);
+  will-change: transform;
+}
+.faq__item:hover {
+  border-color: rgba(79, 195, 247, .6);
+  transform: scale(1.012);
+}
+.faq__item[open] {
+  border-color: var(--azul-500);
+  box-shadow: 0 16px 34px -16px rgba(10, 61, 145, .35);
+}
+
+.faq__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.05rem 1.2rem;
+  font-weight: 700; color: var(--azul-950);
+  cursor: pointer; list-style: none;
+  border-radius: 18px;
+  transition: background .25s;
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary:hover { background: #f3f8ff; }
+.faq__item summary:focus-visible {
+  outline: 3px solid var(--celeste);
+  outline-offset: 2px;
+}
+
+/* Ícono + → × con giro gelatinoso */
+.faq__icono {
+  position: relative;
+  width: 24px; height: 24px; flex: none;
+  border-radius: 50% 50% 50% 35%;
+  background: linear-gradient(135deg, var(--azul-800), var(--azul-500));
+  box-shadow: 0 6px 14px -6px rgba(13, 71, 161, .6);
+  transition: transform .55s var(--muelle), border-radius .55s var(--muelle);
+}
+.faq__icono::before, .faq__icono::after {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  background: var(--blanco); border-radius: 3px;
+}
+.faq__icono::before { width: 12px; height: 2.5px; }
+.faq__icono::after { width: 2.5px; height: 12px; }
+.faq__item[open] .faq__icono {
+  transform: rotate(135deg) scale(1.05);
+  border-radius: 50%;
+}
+
+.faq__respuesta {
+  padding: 0 1.3rem 1.15rem;
+  color: var(--texto-suave); font-size: .95rem;
+}
+.faq__item[open] .faq__respuesta { animation: abrirFaq .5s var(--muelle); }
+@keyframes abrirFaq {
+  from { opacity: 0; transform: translateY(-10px) scale(.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.faq__cta {
+  margin-top: 1.6rem;
+  text-align: center;
+  color: var(--texto-suave); font-weight: 600;
+}
+.faq__cta a {
+  color: var(--azul-600); font-weight: 800; text-decoration: none;
+  border-bottom: 2px solid var(--celeste);
+  display: inline-block;
+  transition: color .25s, transform .45s var(--muelle);
+}
+.faq__cta a:hover { color: var(--azul-900); transform: translateY(-2px) scale(1.04); }
+
+/* ---------- Buscador de departamentos ---------- */
+.cobertura__buscador input {
+  width: 100%;
+  padding: .72rem 1rem;
+  border: 2px solid rgba(30, 136, 229, .18);
+  border-radius: 14px;
+  background: #f7faff;
+  font: inherit; color: var(--texto);
+  margin-bottom: .7rem;
+  transition: border-color .25s, box-shadow .25s, transform .4s var(--muelle), background .25s;
+}
+.cobertura__buscador input:focus {
+  outline: none;
+  border-color: var(--azul-500);
+  background: var(--blanco);
+  box-shadow: 0 0 0 5px rgba(30, 136, 229, .14);
+  transform: scale(1.012);
+}
+.cobertura__sin-resultados { font-size: .85rem; color: var(--texto-suave); margin-bottom: .5rem; }
+
+/* ---------- Ruta animada en el mapa ---------- */
+.ruta-mapa {
+  fill: none;
+  stroke: var(--celeste);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  pointer-events: none;
+  opacity: .95;
+  filter: drop-shadow(0 2px 5px rgba(79, 195, 247, .75));
+}
+.punto-destino {
+  fill: var(--celeste);
+  stroke: var(--blanco);
+  stroke-width: 2;
+  pointer-events: none;
+  animation: latido 1.6s infinite;
+}
 
 /* ---------- Botón flotante WhatsApp ---------- */
 .wa-fab {

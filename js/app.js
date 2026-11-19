@@ -152,12 +152,23 @@ function iniciarMapa() {
   const tooltip = $("#mapaTooltip");
   const tooltipNombre = $("#tooltipNombre");
   const wrap = svg.parentElement;
+  const panel = $(".cobertura__panel");
   const infoNombre = $("#infoDeptoNombre");
   const infoTexto = $("#infoDeptoTexto");
   const infoCta = $("#infoDeptoCta");
   const listaDeptos = $("#listaDeptos");
   const datalist = $("#listaDestinosSugeridos");
-  let seleccionado = null;
+  const respetaMovimiento = () =>
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Línea de ruta Managua → destino (se dibuja sobre los departamentos)
+  const ruta = crearSvg("path", { class: "ruta-mapa", "aria-hidden": "true" });
+  ruta.style.display = "none";
+  const puntoDestino = crearSvg("circle", {
+    class: "punto-destino", r: "5", "aria-hidden": "true",
+  });
+  puntoDestino.style.display = "none";
+  const managua = NIC_DEPTOS.find((d) => d.n === "Managua");
 
   // Crear chips de la lista + datalist del formulario
   const chips = new Map();
@@ -223,6 +234,10 @@ function iniciarMapa() {
     rutas.set(d.n, el);
   });
 
+  // La ruta siempre por encima de todos los polígonos
+  svg.appendChild(ruta);
+  svg.appendChild(puntoDestino);
+
   const pathDe = (d) => rutas.get(d.n);
 
   function mostrarTooltip(d, el) {
@@ -245,6 +260,53 @@ function iniciarMapa() {
     const y = e.clientY - r.top;
     tooltip.style.left = `${x}px`;
     tooltip.style.top = `${y}px`;
+  }
+
+  /** Dibuja la curva Managua → destino con efecto de trazado. */
+  function dibujarRuta(d) {
+    if (!managua || d.n === "Managua") {
+      ruta.style.display = "none";
+      puntoDestino.style.display = "none";
+      return;
+    }
+    const [x1, y1] = managua.c;
+    const [x2, y2] = d.c;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const dist = Math.hypot(dx, dy) || 1;
+    // punto de control: perpendicular a la recta, para curva suave
+    const cx = x1 + dx / 2 - (dy / dist) * dist * 0.22;
+    const cy = y1 + dy / 2 + (dx / dist) * dist * 0.22;
+    ruta.setAttribute("d", `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`);
+    puntoDestino.setAttribute("cx", x2);
+    puntoDestino.setAttribute("cy", y2);
+    ruta.style.display = "";
+    puntoDestino.style.display = "";
+
+    const largo = ruta.getTotalLength();
+    ruta.style.transition = "none";
+    ruta.style.strokeDasharray = String(largo);
+    ruta.style.strokeDashoffset = String(largo);
+    ruta.getBoundingClientRect(); // fuerza el estado inicial
+    if (respetaMovimiento()) {
+      ruta.style.strokeDashoffset = "0";
+    } else {
+      ruta.style.transition = "stroke-dashoffset .9s cubic-bezier(.34, 1.2, .64, 1)";
+      ruta.style.strokeDashoffset = "0";
+    }
+  }
+
+  /** En pantallas angostas, lleva la vista al panel tras seleccionar. */
+  function irAlPanel() {
+    if (!window.matchMedia("(max-width: 900px)").matches) return;
+    const r = panel.getBoundingClientRect();
+    const fueraDeVista = r.top > window.innerHeight * 0.8 || r.bottom < 120;
+    if (fueraDeVista) {
+      panel.scrollIntoView({
+        behavior: respetaMovimiento() ? "smooth" : "auto",
+        block: "start",
+      });
+    }
   }
 
   function seleccionar(d, origen) {
@@ -283,10 +345,40 @@ function iniciarMapa() {
       "aria-label",
       `Cotizar viaje a ${d.n} por WhatsApp`
     );
+    dibujarRuta(d);
+    irAlPanel();
   }
 
   // Estado inicial del panel
   infoCta.href = enlaceWhatsApp("Hola! Quiero cotizar un viaje privado.");
+}
+
+/* ---------- Buscador de departamentos ---------- */
+const normalizarTexto = (s) =>
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+function iniciarBuscadorDeptos() {
+  const input = $("#buscarDepto");
+  const lista = $("#listaDeptos");
+  const sinResultados = $("#sinResultados");
+  if (!input || !lista) return;
+
+  input.addEventListener("input", () => {
+    try {
+      const consulta = normalizarTexto(input.value.trim());
+      let visibles = 0;
+      $$("li", lista).forEach((li) => {
+        const chip = $("button", li);
+        const coincide = normalizarTexto(chip.textContent).includes(consulta);
+        li.style.display = coincide ? "" : "none";
+        if (coincide) visibles += 1;
+      });
+      sinResultados.hidden = visibles > 0;
+      lista.hidden = visibles === 0;
+    } catch (err) {
+      console.error("Error al filtrar departamentos:", err);
+    }
+  });
 }
 
 /* ---------- Formulario de cotización → WhatsApp ---------- */
@@ -330,8 +422,10 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarEnlaceActivo();
   iniciarTiltHero();
   iniciarMapa();
+  iniciarBuscadorDeptos();
   iniciarFormulario();
 
   const anio = $("#anio");
   if (anio) anio.textContent = String(new Date().getFullYear());
 });
+                                                                                                                                                                                                                                                                                                       
