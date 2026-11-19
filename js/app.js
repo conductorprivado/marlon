@@ -310,7 +310,6 @@ function iniciarMapa() {
   }
 
   function seleccionar(d, origen) {
-    seleccionado = d.n;
     // gelatina en el origen del clic
     origen.classList.remove("presionado");
     void origen.getBoundingClientRect();
