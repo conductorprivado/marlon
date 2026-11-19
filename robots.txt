@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://trasladosprivadoni.com/sitemap.xml
+Sitemap: https://conductorprivado.github.io/marlon/sitemap.xml
